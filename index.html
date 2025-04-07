@@ -15,46 +15,75 @@
     }
   </style>
 </head>
-<body class="bg-gray-50 text-gray-800">
-  <header class="bg-white shadow">
-    <div class="container mx-auto px-4 py-4 flex justify-between items-center">
-      <h1 class="text-xl font-bold text-red-600">🎯 YouTube Tag Generator (AI)</h1>
-    </div>
-  </header>
+<body class="min-h-screen flex flex-col bg-gray-50 text-gray-800">
+  <!-- Layout wrapper -->
+  <div class="flex-grow">
 
-  <section class="py-12 bg-gradient-to-r from-red-100 to-pink-100">
-    <div class="container mx-auto px-4 text-center">
-      <h2 class="text-3xl font-bold mb-4">Boost Your Reach with AI</h2>
-      <p class="text-lg text-gray-700 mb-8">Enter your video title and generate smart, SEO-friendly tags.</p>
-      <form id="tagForm" class="max-w-xl mx-auto">
-        <textarea id="videoTitle" placeholder="Paste your YouTube video title here..." rows="3"
-          class="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-400"></textarea>
-        <button type="submit"
-          class="mt-4 px-6 py-3 bg-red-600 text-white font-semibold rounded-lg hover:bg-red-700 transition">
-          Generate Tags with AI
+    <!-- Header with mobile nav -->
+    <header class="bg-white shadow sticky top-0 z-50">
+      <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+        <h1 class="text-xl font-bold text-red-600">🎯 YouTube Tag Generator</h1>
+        <nav class="hidden md:flex space-x-6 font-medium text-gray-700">
+          <a href="#" class="hover:text-red-600 transition">Home</a>
+          <a href="#results" class="hover:text-red-600 transition">Results</a>
+          <a href="https://vercel.com" target="_blank" class="hover:text-red-600 transition">Deploy</a>
+        </nav>
+        <div class="md:hidden">
+          <button id="menuToggle" class="text-gray-800 focus:outline-none">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2"
+              viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 6h16M4 12h16M4 18h16"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+      <!-- Mobile Menu -->
+      <div id="mobileMenu" class="md:hidden hidden px-4 pb-4">
+        <a href="#" class="block py-2 text-gray-700 hover:text-red-600">Home</a>
+        <a href="#results" class="block py-2 text-gray-700 hover:text-red-600">Results</a>
+        <a href="https://vercel.com" target="_blank" class="block py-2 text-gray-700 hover:text-red-600">Deploy</a>
+      </div>
+    </header>
+
+    <!-- Hero / Form -->
+    <section class="py-12 bg-gradient-to-r from-red-100 to-pink-100">
+      <div class="container mx-auto px-4 text-center">
+        <h2 class="text-3xl font-bold mb-4">Boost Your Reach with AI</h2>
+        <p class="text-lg text-gray-700 mb-8">Enter your video title and generate smart, SEO-friendly tags.</p>
+        <form id="tagForm" class="max-w-xl mx-auto">
+          <textarea id="videoTitle" placeholder="Paste your YouTube video title here..." rows="3"
+            class="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-400"></textarea>
+          <button type="submit"
+            class="mt-4 px-6 py-3 bg-red-600 text-white font-semibold rounded-lg hover:bg-red-700 transition">
+            Generate Tags with AI
+          </button>
+        </form>
+      </div>
+    </section>
+
+    <!-- Results Section -->
+    <section id="results" class="container mx-auto px-4 py-8 hidden text-center">
+      <h3 class="text-xl font-semibold mb-4">Generated Tags:</h3>
+      <div id="tagOutput" class="flex flex-wrap justify-center gap-2"></div>
+      <div class="mt-6">
+        <button id="copyBtn"
+          class="px-5 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-900 transition">
+          📋 Copy All Hashtags
         </button>
-      </form>
-    </div>
-  </section>
+        <p id="copyStatus" class="text-sm text-green-600 mt-2 hidden">Copied!</p>
+      </div>
+    </section>
 
-  <section id="results" class="container mx-auto px-4 py-8 hidden text-center">
-    <h3 class="text-xl font-semibold mb-4">Generated Tags:</h3>
-    <div id="tagOutput" class="flex flex-wrap justify-center gap-2"></div>
-    <div class="mt-6">
-      <button id="copyBtn"
-        class="px-5 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-900 transition">
-        📋 Copy All Hashtags
-      </button>
-      <p id="copyStatus" class="text-sm text-green-600 mt-2 hidden">Copied!</p>
-    </div>
-  </section>
+  </div> <!-- end of content wrapper -->
 
+  <!-- Footer -->
   <footer class="bg-white shadow mt-12">
     <div class="container mx-auto px-4 py-6 text-center text-gray-600 text-sm">
       &copy; 2025 YouTube Tag Generator. Built with ❤️ + OpenAI.
     </div>
   </footer>
 
+  <!-- Scripts -->
   <script>
     const form = document.getElementById("tagForm");
     const videoTitle = document.getElementById("videoTitle");
@@ -62,6 +91,12 @@
     const resultsSection = document.getElementById("results");
     const copyBtn = document.getElementById("copyBtn");
     const copyStatus = document.getElementById("copyStatus");
+    const toggle = document.getElementById("menuToggle");
+    const mobileMenu = document.getElementById("mobileMenu");
+
+    toggle.addEventListener("click", () => {
+      mobileMenu.classList.toggle("hidden");
+    });
 
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
