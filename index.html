@@ -40,6 +40,13 @@
   <section id="results" class="container mx-auto px-4 py-8 hidden text-center">
     <h3 class="text-xl font-semibold mb-4">Generated Tags:</h3>
     <div id="tagOutput" class="flex flex-wrap justify-center gap-2"></div>
+    <div class="mt-6">
+      <button id="copyBtn"
+        class="px-5 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-900 transition">
+        📋 Copy All Hashtags
+      </button>
+      <p id="copyStatus" class="text-sm text-green-600 mt-2 hidden">Copied!</p>
+    </div>
   </section>
 
   <footer class="bg-white shadow mt-12">
@@ -53,6 +60,8 @@
     const videoTitle = document.getElementById("videoTitle");
     const tagOutput = document.getElementById("tagOutput");
     const resultsSection = document.getElementById("results");
+    const copyBtn = document.getElementById("copyBtn");
+    const copyStatus = document.getElementById("copyStatus");
 
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
@@ -80,6 +89,15 @@
       } catch (err) {
         tagOutput.innerHTML = `<span class="text-red-500">Error generating tags.</span>`;
       }
+    });
+
+    copyBtn.addEventListener("click", () => {
+      const tags = Array.from(tagOutput.querySelectorAll("span")).map(tag => `#${tag.textContent.replace(/^#/, '')}`);
+      const tagString = tags.join(" ");
+      navigator.clipboard.writeText(tagString).then(() => {
+        copyStatus.classList.remove("hidden");
+        setTimeout(() => copyStatus.classList.add("hidden"), 2000);
+      });
     });
   </script>
 </body>
