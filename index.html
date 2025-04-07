@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>YouTube Tag Generator</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 text-gray-800">
+  <main class="max-w-xl mx-auto mt-20 px-4 space-y-6 text-center">
+    <h1 class="text-3xl font-bold text-blue-600">YouTube Tag Generator</h1>
+    <input id="titleInput" type="text" placeholder="Enter video title"
+      class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+    <button onclick="getTags()"
+      class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 rounded-lg transition duration-200">
+      Generate Tags
+    </button>
+    <div id="tagsContainer" class="flex flex-wrap gap-2 mt-4 justify-center"></div>
+  </main>
+
+  <script>
+    async function getTags() {
+      const query = document.getElementById('titleInput').value;
+      const res = await fetch(`/api/tags?q=${encodeURIComponent(query)}`);
+      const data = await res.json();
+
+      const tagsContainer = document.getElementById('tagsContainer');
+      tagsContainer.innerHTML = '';
+      data.tags.forEach(tag => {
+        const span = document.createElement('span');
+        span.className = 'bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm';
+        span.textContent = `#${tag}`;
+        tagsContainer.appendChild(span);
+      });
+    }
+  </script>
+</body>
+</html>
